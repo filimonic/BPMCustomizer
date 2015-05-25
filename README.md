@@ -10,3 +10,5 @@ You can:
 * Remove your profile icon buttons (both avatar and big button with your nickname) from main screen
 * Add SLEEP, SHUTDOWN or RESTART buttons next to LIBRARY button
 * And it is safe for Steam, no need to run Steam with -noValidate flag or make it offline.
+
+# Screenshots and binaries at http://fil.guru/projects/BPMCustomizer/
