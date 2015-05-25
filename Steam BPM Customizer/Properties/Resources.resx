@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ANONIMOUS_STATISTICS_URL" xml:space="preserve">
+    <value>http://stat.fil.guru/statistics</value>
+  </data>
+  <data name="APPLICATION_LOGO" xml:space="preserve">
+    <value> ___ ___ __  __  ___        _             _            
+| _ ) _ \  \/  |/ __|  _ __| |_ ___ _ __ (_)______ _ _ 
+| _ \  _/ |\/| | (_| || (_-&lt;  _/ _ \ '  \| |_ / -_) '_|
+|___/_| |_|  |_|\___\_,_/__/\__\___/_|_|_|_/__\___|_|
+
+by Alexey D. Filimonov aka 'FilimoniC' &lt;alexey@filimonic.net&gt;
+
+</value>
+  </data>
+  <data name="ERROR_ANOTHER_INSTANCE_ALREADY_RUNNING" xml:space="preserve">
+    <value>Another instance of application is running already</value>
+  </data>
+  <data name="ERROR_FILE_ADDING_TO_WATCH_IOERROR" xml:space="preserve">
+    <value>Error adding file to watch while trying to check R\W functions: {0} : {1}</value>
+  </data>
+  <data name="ERROR_FILE_ADDING_TO_WATCH_NOTEXIST" xml:space="preserve">
+    <value>Error adding file to watch: file does not exist or inaccessible: {0}</value>
+  </data>
+  <data name="ERROR_FILE_WRITE_FAILURE" xml:space="preserve">
+    <value>Error rewriting file data: {0} : {1}</value>
+  </data>
+  <data name="ERROR_REGISTRY_OPEN_STEAM_REGISTY_KEY" xml:space="preserve">
+    <value>Error opening Steam registry key</value>
+  </data>
+  <data name="ERROR_REGISTRY_READ_STEAM_PATH" xml:space="preserve">
+    <value>Error getting Steam path</value>
+  </data>
+  <data name="ERROR_STEAM_WINDOW_DETECTED_UNKNOWN_STATE" xml:space="preserve">
+    <value>Error! Steam BPM Window detected unknown event {0}</value>
+  </data>
+  <data name="ERROR_TRANSFORMER_ALL_ERROR_XML" xml:space="preserve">
+    <value>Error! Could not process XML data :{0}</value>
+  </data>
+  <data name="ERROR_TRANSFORMER_MAINMENU_UNABLE_TO_SAVE_FILE" xml:space="preserve">
+    <value>Error! Unable to save file {0} : {1}</value>
+  </data>
+  <data name="ERROR_UNABLE_TO_DETECT_SINGLE_PROCESS_CHECK" xml:space="preserve">
+    <value>Unable to check if application already running : {0}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FILE_BPMT_ShoppingCartIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BPMT_ShoppingCartIcon.pngpic;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="HELP_CMDLINE_OPTIONS_DESCRIPTION" xml:space="preserve">
+    <value>
+Note: 
+* Main Screen can take only 3 or 4 buttons,
+     depending on your screen resolution.
+     Other buttons will not be whown, but will be available
+     for navigation
+* Some items are not shown normally
+     (like 'Switch to HDMI Input' when you do not have one)
+* GoToLibraryOnStart also enables AddUpperStoreMainMenu and NoStoreButtonMainMenu
+      VERY VERY EXPERIMENTAL
+</value>
+  </data>
+  <data name="HELP_CMDLINE_OPTIONS_FOOTER" xml:space="preserve">
+    <value>---
+Example:
+   SBPMCustomizer.exe NoProfileIcon AddQuitEntryMainMenu NoUpperExitMainMenu</value>
+  </data>
+  <data name="HELP_HEADER" xml:space="preserve">
+    <value>
+Steam BPM customizer
+          by Alexey D. 'Filimonic' Filimonov &lt;alexey@filimonic.net&gt;
+
+Usage:   SBPMCustomizer.exe [option [option ...]]
+Options:
+</value>
+  </data>
+  <data name="HELP_PARAMETER" xml:space="preserve">
+    <value>    {0} - {1}</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_AddQuitEntryMainMenu" xml:space="preserve">
+    <value>Add Exit Steam button to Main Screen (labeled EXIT)</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_AddRestartEntryMainMenu" xml:space="preserve">
+    <value>Add Restart button to Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_AddShutdownEntryMainMenu" xml:space="preserve">
+    <value>Add Shutdown button to Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_AddSleepEntryMainMenu" xml:space="preserve">
+    <value>Add Sleep button to Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_AddUpperStoreMainMenu" xml:space="preserve">
+    <value>Add small Store top right on Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_FMode" xml:space="preserve">
+    <value>(PRESET) FMode. Preset by developer. See log</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_GoToLibraryOnStart" xml:space="preserve">
+    <value>(!!VERY EXPERIMENTAL) Go to Library on start.</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_HideConsole" xml:space="preserve">
+    <value>Hide console window</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoBetaButtonMainMenu" xml:space="preserve">
+    <value>Disable BETA button in main menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoBrowserNavigation" xml:space="preserve">
+    <value>(!!UNFINISHED) Disable any links that open browser</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoChangeUser" xml:space="preserve">
+    <value>Disable Change User in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NODESCRIPTION" xml:space="preserve">
+    <value>No description</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoExitBPM" xml:space="preserve">
+    <value>Disable Exit BPM in Quit menu (returns to non-BPM client)</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoExitSteam" xml:space="preserve">
+    <value>Disable Exit Steam in Quit menu (this closes Steam client)</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoHdmiInput" xml:space="preserve">
+    <value>Disable Switch to HDMI Input in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoOffline" xml:space="preserve">
+    <value>Disables Go Offline in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoOnline" xml:space="preserve">
+    <value>Disables Go Online in Quit menu and Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoParentalLockButtonMainMenu" xml:space="preserve">
+    <value>Disables Parental Lock button in Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoProfileIcon" xml:space="preserve">
+    <value>Disables Profile Icon and &lt;YourNick&gt; button in Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoRestart" xml:space="preserve">
+    <value>Disables Restart in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoSettingsMainMenu" xml:space="preserve">
+    <value>Disables Settings in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoSettingsQuitMenu" xml:space="preserve">
+    <value>Disables Settings icon in Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoShutdown" xml:space="preserve">
+    <value>Disables Shutdown in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoSleep" xml:space="preserve">
+    <value>Disables Sleep in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoStoreButtonMainMenu" xml:space="preserve">
+    <value>(!!EXPERIMENTAL) Remove Store button from Main Scr</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoTurnOffCont" xml:space="preserve">
+    <value>Disables Turn Off Controller in Quit menu</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoUpperExitMainMenu" xml:space="preserve">
+    <value>Disables Quit icon on Main Screen</value>
+  </data>
+  <data name="HELP_PARAMETER_DESCRIPTION_NoZT" xml:space="preserve">
+    <value>Disables Zero Tracker in Quit menu</value>
+  </data>
+  <data name="REPORT_APPLYING_TRANSFORMATION" xml:space="preserve">
+    <value>Applying transformation to file {0}</value>
+  </data>
+  <data name="REPORT_CMDLINE_PARAMETER_ACCEPTED" xml:space="preserve">
+    <value>Command line parameter accepted: {0}</value>
+  </data>
+  <data name="REPORT_CMDLINE_PARAMETER_UNKNOWN" xml:space="preserve">
+    <value>Command line parameter is unsupported: {0}</value>
+  </data>
+  <data name="REPORT_FILE_ADDED_TO_WATCH" xml:space="preserve">
+    <value>File added to watch {0}</value>
+  </data>
+  <data name="REPORT_FILE_DETECTED_CHANGED" xml:space="preserve">
+    <value>File change detected: {0} : {1}</value>
+  </data>
+  <data name="REPORT_FILE_DETECTED_RENAMED" xml:space="preserve">
+    <value>FIle rename detected: {0} -&gt;{1}</value>
+  </data>
+  <data name="REPORT_FILE_IS_NOT_WATCHED" xml:space="preserve">
+    <value>File is not watched {0}</value>
+  </data>
+  <data name="REPORT_FILE_REWRITE_BEGIN" xml:space="preserve">
+    <value>Beginnig rewriting file {0}</value>
+  </data>
+  <data name="REPORT_FILE_UPDATED" xml:space="preserve">
+    <value>File updated {0}</value>
+  </data>
+  <data name="REPORT_FILE_UPDATING_ORIGINAL_DATA" xml:space="preserve">
+    <value>Updating file original data : {0}</value>
+  </data>
+  <data name="REPORT_FILE_WRITE_MODIFIED_STATE" xml:space="preserve">
+    <value>Setting modified file state : {0}</value>
+  </data>
+  <data name="REPORT_FILE_WRITE_ORIGINAL_STATE" xml:space="preserve">
+    <value>Setting original file state : {0}</value>
+  </data>
+  <data name="REPORT_FILE_WRTE_DATA" xml:space="preserve">
+    <value>Writing file data ( {0} bytes )</value>
+  </data>
+  <data name="REPORT_FILE_WRTE_DATA_COMPLETE" xml:space="preserve">
+    <value>File data rewritten : {0}</value>
+  </data>
+  <data name="REPORT_LOCK_FILE" xml:space="preserve">
+    <value>Locking file {0}</value>
+  </data>
+  <data name="REPORT_RESTORE_FILE_WATCHER" xml:space="preserve">
+    <value>Restoring file watcher...</value>
+  </data>
+  <data name="REPORT_STEAM_PATH" xml:space="preserve">
+    <value>Steam path is {0}</value>
+  </data>
+  <data name="REPORT_STEAM_WINDOW_DETECTED_CREATED" xml:space="preserve">
+    <value>Steam BPM Window creation detected</value>
+  </data>
+  <data name="REPORT_STEAM_WINDOW_DETECTED_DESTROYED" xml:space="preserve">
+    <value>Steam BPM Window destruction detected</value>
+  </data>
+  <data name="REPORT_STOP_FILE_WATCHER" xml:space="preserve">
+    <value>File watcher stopping...</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_ALL_TRANSFORMING_BEGIN" xml:space="preserve">
+    <value>Transforming data...</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_ALL_TRANSFORMING_END" xml:space="preserve">
+    <value>Data transformed</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_ALL_UNABLE_TO_PROCESS_SETTING" xml:space="preserve">
+    <value>Unable to process setting {0}</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_MAINMENU_LOGPREFIX" xml:space="preserve">
+    <value>BPMT_MainMenu ::</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_MAINMENU_NODE_DISABLED" xml:space="preserve">
+    <value>Node disabled : {0}</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_QUITENTRIES_LOGPREFIX" xml:space="preserve">
+    <value>BPMT_QuitEntries ::</value>
+  </data>
+  <data name="REPORT_TRANSFORMER_QUITENTRIES_NODE_DISABLED" xml:space="preserve">
+    <value>Quit menu item disabled: {0}</value>
+  </data>
+  <data name="REPORT_UPDATEALL_FINISHED" xml:space="preserve">
+    <value>All watched files updated</value>
+  </data>
+  <data name="REPORT_UPDATEALL_STARTED" xml:space="preserve">
+    <value>Updating all watched files...</value>
+  </data>
+  <data name="REPORT_WATCHER_STARTED" xml:space="preserve">
+    <value>Watcher started</value>
+  </data>
+  <data name="SETTING_FILE_MAINMENU" xml:space="preserve">
+    <value>tenfoot\resource\layout\mainmenu.xml</value>
+  </data>
+  <data name="SETTING_FILE_QUITENTRIES" xml:space="preserve">
+    <value>tenfoot\resource\layout\quitentries.xml</value>
+  </data>
+  <data name="_48ico" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\48ico.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
