@@ -165,6 +165,9 @@ namespace Steam_BPM_Customizer
                 case SteamItemSettings.NoUpperExitMainMenu:
                      DisableNodeById(document, @"Button", @"Exit");
                      break;
+                case SteamItemSettings.NoCommunityMainScreen:
+                     DisableNodeById(document, @"ParentalButton", @"CommunityButton");
+                     break;
                 case SteamItemSettings.NoStoreButtonMainMenu:
                      DisableNodeById(document, @"ParentalButton", @"StoreButton");
                      break;

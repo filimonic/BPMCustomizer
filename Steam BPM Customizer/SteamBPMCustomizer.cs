@@ -47,6 +47,7 @@ namespace Steam_BPM_Customizer
         NoBrowserNavigation, //NoBrowserNavigation
         NoStoreButtonMainMenu, //NoStoreButtonMainMenu
         GoToLibraryOnStart,//GoToLibraryOnStart
+        NoCommunityMainScreen,//NoCommunityMainScreen
         FMode, //FMode
     }
 
@@ -159,6 +160,7 @@ namespace Steam_BPM_Customizer
                 AddSettingParameter(ref settingsList, SteamItemSettings.NoBetaButtonMainMenu);
                 AddSettingParameter(ref settingsList, SteamItemSettings.NoSettingsQuitMenu);
                 AddSettingParameter(ref settingsList, SteamItemSettings.NoProfileIcon);
+                AddSettingParameter(ref settingsList, SteamItemSettings.NoCommunityMainScreen);
             }
         }
 
@@ -310,6 +312,7 @@ namespace Steam_BPM_Customizer
                     case SteamItemSettings.AddUpperStoreMainMenu:
                     case SteamItemSettings.GoToLibraryOnStart:
                     case SteamItemSettings.NoStoreButtonMainMenu:
+                    case SteamItemSettings.NoCommunityMainScreen:
                         AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_MAINMENU)), BPMT_MainMenu.Transform);
                         break;
                     case SteamItemSettings.NoBrowserNavigation: //This is separate because many will be added
@@ -561,7 +564,8 @@ namespace Steam_BPM_Customizer
                     return Properties.Resources.HELP_PARAMETER_DESCRIPTION_FMode;
                 case SteamItemSettings.GoToLibraryOnStart:
                     return Properties.Resources.HELP_PARAMETER_DESCRIPTION_GoToLibraryOnStart;
-
+                case SteamItemSettings.NoCommunityMainScreen:
+                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoCommunityMainScreen;
                 default :
                     return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NODESCRIPTION;
             }

@@ -349,6 +349,15 @@ namespace Steam_BPM_Customizer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disables community button on main screen.
+        /// </summary>
+        internal static string HELP_PARAMETER_DESCRIPTION_NoCommunityMainScreen {
+            get {
+                return ResourceManager.GetString("HELP_PARAMETER_DESCRIPTION_NoCommunityMainScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No description.
         /// </summary>
         internal static string HELP_PARAMETER_DESCRIPTION_NODESCRIPTION {
