@@ -30,7 +30,7 @@ namespace Steam_BPM_Customizer
     class BPM_Updater
     {
         private static string _updateXml = @"http://fil.guru/projects/BPMCustomizer/update.xml";
-        private static int _updateCheckInterval = 3; //min
+        private static int _updateCheckInterval = 30; //min
         private System.Threading.Timer _timer;
         private static DateTime _lastUpdateCheckTime = DateTime.MinValue;
         private static BPM_Updater_UpdateStatus _lastUpdateCheckStatus = BPM_Updater_UpdateStatus.UNKNOWN;
