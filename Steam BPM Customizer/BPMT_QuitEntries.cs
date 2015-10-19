@@ -9,8 +9,9 @@ namespace Steam_BPM_Customizer
     class BPMT_QuitEntries 
     {
 
-        public static byte[] Transform(byte[] dataIn, SteamItemSettings[] settingList, string steamPath) {
+        public static byte[] Transform(byte[] dataIn, SteamItemSettings[] _unused, string steamPath) {
             //Translate data to XML:
+            SteamItemSettings[] settingList = BPM_OptionsManager.GetSettings().ToArray();
             Log(Properties.Resources.REPORT_TRANSFORMER_ALL_TRANSFORMING_BEGIN);
             XmlDocument xmlData;
             try 
@@ -48,11 +49,11 @@ namespace Steam_BPM_Customizer
               //  Log("No such entry type in this transformer!");
                 return false;
             }
-            //Log(String.Format("Looking for node with [{0}]", entryOnActivateSubstring));
+            Log(String.Format("Looking for node with [{0}]", entryOnActivateSubstring));
             XmlNode buttonNode = document.SelectSingleNode (@"//Button[contains(@onactivate,'" + entryOnActivateSubstring + "')]");
             if (buttonNode == null)
             {
-                //Log("No such node found");
+                Log("No such node found");
                 return false;
             }
             XmlAttribute styleAttribute = document.CreateAttribute("style");
@@ -66,12 +67,21 @@ namespace Steam_BPM_Customizer
         {
             switch (entryType)
             {
-                case SteamItemSettings.NoChangeUser :
+                case SteamItemSettings.No_QuitMenu_LogOff :
                     return "ChangeUser()";
-                case SteamItemSettings.NoExitBPM :
+                case SteamItemSettings.No_QuitMenu_ExitBPM :
                     return "QuitApp()";
-                case SteamItemSettings.NoExitSteam :
+                case SteamItemSettings.No_QuitMenu_ExitSteam :
                     return "ExitSteam()";
+                case SteamItemSettings.No_QuitMenu_Restart:
+                    return "RestartMachine()";
+                case SteamItemSettings.No_QuitMenu_Settings:
+                    return "ShowSettingsFromQuitEntries()";
+                case SteamItemSettings.No_QuitMenu_Shutdown:
+                    return "ShutdownMachine()";
+                case SteamItemSettings.No_QuitMenu_Sleep:
+                    return "SuspendMachine()";
+#if _DEVELOPEMENT_MODE_
                 case SteamItemSettings.NoHdmiInput :
                     return "SwitchToHDMIInput()";
                 case SteamItemSettings.NoOffline :
@@ -80,23 +90,16 @@ namespace Steam_BPM_Customizer
                     return "GoOnline()";
                 case SteamItemSettings.NoZT :
                     return "ZeroTracker()";
-                case SteamItemSettings.NoRestart :
-                    return "RestartMachine()";
-                case SteamItemSettings.NoSettingsQuitMenu :
-                    return "ShowSettingsFromQuitEntries()";
-                case SteamItemSettings.NoShutdown:
-                    return "ShutdownMachine()";
-                case SteamItemSettings.NoSleep:
-                    return "SuspendMachine()";
                 case SteamItemSettings.NoTurnOffCont:
                     return "TurnOffActiveController()";
-                default :
+#endif
+                    default :
                     return null;
             }
         }
 
         private static void Log (string message) {
-            Console.WriteLine(Properties.Resources.REPORT_TRANSFORMER_QUITENTRIES_LOGPREFIX + message);
+            BPM_Log.Log(Properties.Resources.REPORT_TRANSFORMER_QUITENTRIES_LOGPREFIX + message);
         }
     }
 }

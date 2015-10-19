@@ -303,7 +303,7 @@ Options:
     <value>Beginnig rewriting file {0}</value>
   </data>
   <data name="REPORT_FILE_UPDATED" xml:space="preserve">
-    <value>File updated {0}</value>
+    <value>File in-memory data updated {0}</value>
   </data>
   <data name="REPORT_FILE_UPDATING_ORIGINAL_DATA" xml:space="preserve">
     <value>Updating file original data : {0}</value>

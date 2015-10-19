@@ -5,12 +5,15 @@ using System.Text;
 using System.Xml;
 using System.IO;
 
+#if _DEVELOPEMENT_MODE_
+
 namespace Steam_BPM_Customizer
 {
     class BPMT_MainMenu
     {
-        public static byte[] Transform(byte[] dataIn, SteamItemSettings[] settingList, string steamPath)
+        public static byte[] Transform(byte[] dataIn, SteamItemSettings[] _unused, string steamPath)
         {
+            SteamItemSettings[] settingList = BPM_OptionsManager.Getettings().ToArray();
             //Translate data to XML:
             Log(Properties.Resources.REPORT_TRANSFORMER_ALL_TRANSFORMING_BEGIN);
             XmlDocument xmlData;
@@ -150,9 +153,12 @@ namespace Steam_BPM_Customizer
                      DisableNodeById(document, @"Panel", @"Avatar");
                      break;
                 case SteamItemSettings.NoProfileIcon :
-                     DisableNodeById(document, @"Panel", @"Avatar") ;
-                     DisableNodeById(document, @"ParentalButton", @"ProfileButton");
+                     DisableNodeById(document, @"Button", @"Avatar") ;
+                     //DisableNodeById(document, @"Panel", @"ProfileNameWrapper");
                      break;
+                case SteamItemSettings.HomeScreenHideProfileName:
+                    DisableNodeById(document, @"Label", @"ProfileNameLabel");
+                    break;
                 case SteamItemSettings.NoSettingsMainMenu:
                      DisableNodeById(document, @"ParentalButton", @"SettingsButton");
                      break;
@@ -179,7 +185,15 @@ namespace Steam_BPM_Customizer
                     AddMenuRowButton(document, setting);
                      break;
                 case SteamItemSettings.AddUpperStoreMainMenu:
-                     AddMenuUpperButton(document, setting, steamPath);
+                     try
+                     {
+                         AddMenuUpperButton(document, setting, steamPath);
+                     }
+                     catch (Exception e)
+                     {
+                         Log("Error: " + e.Message);
+                     }
+                     
                      break;
                 default:
                     return false;
@@ -315,7 +329,7 @@ namespace Steam_BPM_Customizer
                 return false;
             }
             SetAttribute(node, "style", "visibility: collapse;");
-            SetAttribute(node, "BPMT_visible", "0");
+            //SetAttribute(node, "BPMT_visible", "0");
             Log(String.Format(Properties.Resources.REPORT_TRANSFORMER_MAINMENU_NODE_DISABLED,elementId));
             return true;
         }
@@ -323,7 +337,8 @@ namespace Steam_BPM_Customizer
 
         private static void Log(string message)
         {
-            Console.WriteLine(Properties.Resources.REPORT_TRANSFORMER_MAINMENU_LOGPREFIX + message);
+            BPM_Log.Log(Properties.Resources.REPORT_TRANSFORMER_MAINMENU_LOGPREFIX + message);
         }
     }
 }
+#endif

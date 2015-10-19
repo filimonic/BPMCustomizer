@@ -9,6 +9,10 @@ using System.Xml;
 using System.Security.Permissions;
 using System.Resources;
 using System.Diagnostics;
+using System.Reflection;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Media;
 
 namespace Steam_BPM_Customizer
 {
@@ -21,18 +25,22 @@ namespace Steam_BPM_Customizer
 
     enum SteamItemSettings 
     {
-        NoHdmiInput, //noHdmiInput
-        NoExitBPM, //noExitBPM
-        NoExitSteam, //noExitSteam
-        NoTurnOffCont, //noTurnOffCont
-        NoZT, //noZT
-        NoSettingsQuitMenu, //noSettings
-        NoChangeUser, //noChangeUser
-        NoOffline, //noOffline 
-        NoOnline, //noOnline
-        NoShutdown, //noShutdown
-        NoRestart, //noRestart
-        NoSleep, //noSleep
+
+        No_QuitMenu_ExitBPM, //noExitBPM
+        No_QuitMenu_ExitSteam, //noExitSteam
+
+        No_QuitMenu_Settings, //noSettings
+        No_QuitMenu_LogOff, //noChangeUser
+
+        No_QuitMenu_Shutdown, //noShutdown
+        No_QuitMenu_Restart, //noRestart
+        No_QuitMenu_Sleep, //noSleep
+        Program_SendUsageStatistics,
+        Program_EnableAutoUpdate,
+        Program_FirstRunPassed_v0050,
+        Program_DelayAutoUpdateAfterStart,
+
+#if _DEVELOPEMENT_MODE_
         NoProfileIcon, //NoProfileIcon
         NoSettingsMainMenu, //NoSettingsMainMenu
         NoUpperExitMainMenu, //NoSettingsMainMenu
@@ -49,44 +57,217 @@ namespace Steam_BPM_Customizer
         GoToLibraryOnStart,//GoToLibraryOnStart
         NoCommunityMainScreen,//NoCommunityMainScreen
         FMode, //FMode
+        HomeScreenHideProfileName,
+        NoHdmiInput, //noHdmiInput
+        NoTurnOffCont, //noTurnOffCont
+        NoZT, //noZT
+        NoOffline, //noOffline 
+        NoOnline, //noOnline        
+#endif
+
+
     }
 
     class SteamBPMCustomizer
     {
         private FileSystemWatcher _fsw;
         private string _steamPath;
-        private bool _isSteamRunning;
+        private static bool _isSteamRunning = false;
         //DEPRECATED private BootStrapMonitor _bootstrapMonitor;
         private SteamBPMWindowHook _steamBpmHook;
+        private BPM_Updater _autoUpdater;
         private const string STEAM_REGISTRY_KEY = @"Software\Valve\Steam";
         private const string STEAM_REGISTRY_INSTALLATION_PATH_VALUE_NAME = @"SteamPath";
         private const string STEAM_BPM_WINDOW_CLASS_NAME = "CUIEngineWin32";
         private Dictionary<string,FileData> _filesToWatch;
-        private List<SteamItemSettings> _settings;
-        public static void Main(string[] args)
+        //private List<SteamItemSettings> _settings;
+        private static FormLog _formLog;
+        private static formOptions _formOptions;
+        private static SteamBPMCustomizer _bpmCustomizerWorker;
+        private static NotifyIcon _trayIcon;
+        private static DateTime _applicationStartTime;
+        //private static bool _isRestarting;
+        
+
+        public static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.ApplicationExit += OnApplicationExit;
+            _bpmCustomizerWorker = null;
+            //_isRestarting = false;
+            _applicationStartTime = DateTime.Now;
+            IsSteamRunning = false;
+            _formLog = new FormLog();
+            _formOptions = new formOptions(); 
+            _trayIcon = new NotifyIcon();
+            InitTrayIcon();
+
+
+
             Log(Properties.Resources.APPLICATION_LOGO);
+            for (int i = 60; i > 0; i--)
+            {
+                if (!IsApplicationFirstInstance)
+                {
+                    Log("This is not single instance of application. Will wait some time for old app to close if this is self-update...");
+                    Thread.Sleep(500);
+                }
+            }
             if (!IsApplicationFirstInstance)
             {
                 Log(Properties.Resources.ERROR_ANOTHER_INSTANCE_ALREADY_RUNNING);
-                return;
+                Thread.Sleep(1000);
+                _trayIcon.Visible = false;
+                Environment.Exit(2);
             }
-            string steamPath = GetSteamPath();
-            if (args.Length <= 0) {
-                ShowHelp();
-                Environment.Exit(0);
-                return;
+
+            if (BPM_Updater.CheckUpdate() == BPM_Updater_UpdateStatus.UPDATE_AVAILABLE)
+            {
+                _trayIcon.BalloonTipText = "Updating BPMCustomizer";
+                _trayIcon.ShowBalloonTip(1000);
+                Thread.Sleep(1000);
+                BPM_Updater.PerformUpdate();
+                Environment.Exit(3);
             }
-            List<SteamItemSettings> settings = ProcessCliArgs(args);
-            if (settings.Contains(SteamItemSettings.HideConsole)) {
-                ConsoleManager.HideConsole();
+
+            string steamPath = String.Empty;
+            try
+            {
+                steamPath = GetSteamPath();
+            } catch
+            {
+                Log("Unable to read STEAM path from registry");
+                Thread.Sleep(1000);
+                _trayIcon.Visible = false;
+                Environment.Exit(1);
             }
-            SteamBPMCustomizer bpmCustomizer = new SteamBPMCustomizer(steamPath, settings);
-            bpmCustomizer.Start();
-            while (true) {
-                Thread.Sleep(Timeout.Infinite);
+
+           List<SteamItemSettings> settings = BPM_OptionsManager.GetSettings();
+           if (!settings.Contains(SteamItemSettings.Program_FirstRunPassed_v0050))
+           {
+                BPM_OptionsManager.SetDefaults();
+                settings = BPM_OptionsManager.GetSettings();
+                _trayIcon.BalloonTipTitle = @"BPM Customizer";
+                _trayIcon.BalloonTipText = @"BPM Customizer is in notification area. Right click it to show more.";
+                _trayIcon.ShowBalloonTip(1000);
+           }
+           foreach (SteamItemSettings set in settings.ToArray())
+           {
+                BPM_Log.Log("Setting enabled: " + Enum.GetName(typeof(SteamItemSettings),set));
+           }
+
+            _bpmCustomizerWorker = new SteamBPMCustomizer(steamPath, settings);
+            _bpmCustomizerWorker.Start();
+            Application.Run();
+        }
+
+        public static void RestartApp()
+        {
+            Log("[!!!]Restarting App!");
+            Process.Start(Assembly.GetEntryAssembly().Location);
+            //_isRestarting = true;
+            trayIconMenu_Exit_Click(null, null);
+        }
+
+        public static TimeSpan ApplicationUptime
+        {
+            get
+            {
+                return (DateTime.Now - _applicationStartTime);
             }
+        }
+
+        public static bool IsSteamClientRunning
+        {
+            get
+            {
+                return IsSteamRunning;
+            }
+        }
+
+        public static Version ApplicationVersion
+        {
+            get
+            {
+                return Version.Parse(Application.ProductVersion);
+            }
+        }
+
+
+        private static void OnApplicationExit(object sender, EventArgs e)
+        {
+            BPM_Log.Log("Preparing to exit...");
+            _formLog.Close();
+            _formOptions.Close();
+            if (_bpmCustomizerWorker != null)
+            {
+                _bpmCustomizerWorker.Stop();
+            } 
+            BPM_Log.Log("Exiting");
+            //Thread.Sleep(_isRestarting?0:5000);
+            _trayIcon.Visible = false;
+            Environment.Exit(0);
+        }
+
+        private static void InitTrayIcon()
+        {
+
+            _trayIcon = new NotifyIcon();
+            ContextMenu trayIconMenu = new ContextMenu();
+
+            MenuItem trayIconMenu_VersionInfo = new MenuItem();
+            trayIconMenu_VersionInfo.Text = Application.ProductName + " (v" + Application.ProductVersion + ")";
+            trayIconMenu_VersionInfo.Index = 3;
+            trayIconMenu_VersionInfo.Enabled = false;
             
+          //  trayIconMenu_VersionInfo.Click += new EventHandler(trayIconMenu_Log_Click);
+
+            trayIconMenu.MenuItems.Add(trayIconMenu_VersionInfo);
+            trayIconMenu.MenuItems.Add("Author's home page ...", trayIconMenu_AuthorsHomePage_Click);
+            trayIconMenu.MenuItems.Add("-");
+            //trayIconMenu.MenuItems.Add("Log ...", trayIconMenu_Log_Click);
+            trayIconMenu.MenuItems.Add("Settings ...", trayIconMenu_Options_Click);
+            trayIconMenu.MenuItems.Add("Exit BPM Customizer", trayIconMenu_Exit_Click);
+            _trayIcon.Icon = Properties.Resources._48ico;
+            _trayIcon.Text = Application.ProductName + " (v" + Application.ProductVersion + ")";
+            _trayIcon.ContextMenu = trayIconMenu;
+            _trayIcon.DoubleClick += new EventHandler(trayIconMenu_Options_Click);
+
+            //_trayIcon.Click += new EventHandler(trayMenu_Click);
+            _trayIcon.Visible = true;
+        }
+
+        private static void trayIconMenu_Exit_Click(object Sender, EventArgs e)
+        {
+            BPM_Log.Log("Exiting fired");
+            //_trayIcon.ContextMenu = null;
+            _formLog.Dispose();
+            _formOptions.Dispose();
+            Application.Exit();
+            
+            //Environment.Exit(0);
+        }
+
+        private static void trayIconMenu_AuthorsHomePage_Click(object Sender, EventArgs e)
+        {
+            //MessageBox.Show("HEHE");
+            System.Diagnostics.Process.Start(@"http://fil.guru");
+            //_formLog.Log(BPM_Log.GetLog());
+        }
+
+        private static void trayIconMenu_Log_Click(object Sender, EventArgs e)
+        {
+            //MessageBox.Show("HEHE");
+            _formLog.Show();
+            //_formLog.Log(BPM_Log.GetLog());
+        }
+
+        private static void trayIconMenu_Options_Click(object Sender, EventArgs e)
+        {
+            
+            //MessageBox.Show("HEHE");
+            _formOptions.Show();
         }
 
         private static bool IsApplicationFirstInstance
@@ -112,24 +293,36 @@ namespace Steam_BPM_Customizer
 
         public SteamBPMCustomizer(string steamPath, List<SteamItemSettings> settings)
         {
-            IsSteamRunning = false;
+            
             _steamPath = steamPath;
-            _settings = settings;
+            //_settings = settings;
+            Log("Steam running?" + IsSteamClientRunning);
             _steamBpmHook = new SteamBPMWindowHook(STEAM_BPM_WINDOW_CLASS_NAME);
             _steamBpmHook.StateChanged += new EventHandler<int>(OnSteamWindowStateChanged);
+            _autoUpdater = new BPM_Updater();
+
+
+            BPM_OptionsManager.SettingsChanged += OnSettingsChanged;
             //DEPRECATED _bootstrapMonitor = new BootStrapMonitor(Path.GetFullPath(Path.Combine(_steamPath, @"logs\bootstrap_log.txt")));
             //DEPRECATED _bootstrapMonitor.LineAdded += new EventHandler<string>(OnBoostrapLogChanged);
-            
         }
 
-        private bool IsSteamRunning
+        private void OnSettingsChanged(Object sender, EventArgs e)
+        {
+            //TODO
+            UpdateAllFileData();
+        }
+
+        private static bool IsSteamRunning
         {
             get 
             {
+                Log("[int]Checked is steam running: " + _isSteamRunning);
                 return _isSteamRunning;
             }
             set
             {
+                Log("[int]Set steam running state: " + value);
                 _isSteamRunning = value;
             }
             
@@ -145,56 +338,12 @@ namespace Steam_BPM_Customizer
             return false;
         }
 
-        private static void CompleteSettings(ref List<SteamItemSettings> settingsList)
-        {
-            if (settingsList.Contains(SteamItemSettings.GoToLibraryOnStart))
-            {
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoStoreButtonMainMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.AddUpperStoreMainMenu);
-            }
-            if (settingsList.Contains(SteamItemSettings.FMode))
-            {
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoStoreButtonMainMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.AddQuitEntryMainMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.AddUpperStoreMainMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoBetaButtonMainMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoSettingsQuitMenu);
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoProfileIcon);
-                AddSettingParameter(ref settingsList, SteamItemSettings.NoCommunityMainScreen);
-            }
-        }
-
         private static void AddSettingParameter(ref List<SteamItemSettings> settingsList, SteamItemSettings setting )
         {
             if (!settingsList.Contains(setting))
             {
                 settingsList.Add(setting);
             }
-        }
-
-        private static List<SteamItemSettings> ProcessCliArgs(string[] args)
-        {
-            List<SteamItemSettings> cliSettings;
-            cliSettings = new List<SteamItemSettings>();
-
-            for (int i = 0; i < args.Length; i++)
-            {
-                SteamItemSettings itemSettingName;
-                if (Enum.TryParse<SteamItemSettings>(args[i], true, out itemSettingName))
-                {
-                    AddSettingParameter(ref cliSettings, itemSettingName);
-                    //Log(String.Format(Properties.Resources.REPORT_CMDLINE_PARAMETER_ACCEPTED, itemSettingName.ToString("G")));
-                }
-                else
-                {
-                    Log(String.Format(Properties.Resources.REPORT_CMDLINE_PARAMETER_UNKNOWN, args[i]));
-                    ShowHelp();
-                    Environment.Exit(0);
-                    return null;
-                }
-            }
-            CompleteSettings(ref cliSettings);
-            return cliSettings;
         }
 
         private static string GetSteamPath()
@@ -253,7 +402,9 @@ namespace Steam_BPM_Customizer
         private void UpdateAllFileData()
         {
             Log(Properties.Resources.REPORT_UPDATEALL_STARTED);
-            foreach (string path in _filesToWatch.Keys)
+            List<string> _fileNames;
+            _fileNames = _filesToWatch.Keys.ToList();
+            foreach (string path in _fileNames)
             {
                 UpdateFileData(path);
             }
@@ -271,7 +422,7 @@ namespace Steam_BPM_Customizer
             FileData fileData;
             fileData = _filesToWatch[path];
             fileData.OriginalData = originalFileData;
-            fileData.TransformedData = fileData.TransformFunction(originalFileData, _settings.ToArray(),_steamPath);
+            fileData.TransformedData = fileData.TransformFunction(originalFileData, BPM_OptionsManager.GetSettings().ToArray(),_steamPath);
             _filesToWatch[path] = fileData;
             Log(String.Format(Properties.Resources.REPORT_FILE_UPDATED,path));
         }
@@ -281,46 +432,8 @@ namespace Steam_BPM_Customizer
         {
             _filesToWatch = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (SteamItemSettings settingsItem in _settings)
-            {
-                switch (settingsItem)
-                {
-                    case SteamItemSettings.NoChangeUser :
-                    case SteamItemSettings.NoExitBPM :
-                    case SteamItemSettings.NoExitSteam:
-                    case SteamItemSettings.NoHdmiInput:
-                    case SteamItemSettings.NoOffline:
-                    case SteamItemSettings.NoZT:
-                    case SteamItemSettings.NoRestart:
-                    case SteamItemSettings.NoSettingsQuitMenu:
-                    case SteamItemSettings.NoShutdown:
-                    case SteamItemSettings.NoSleep:
-                    case SteamItemSettings.NoTurnOffCont:
-                        AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_QUITENTRIES)), BPMT_QuitEntries.Transform);
-                        break;
-                    case SteamItemSettings.NoOnline:
-                        AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_QUITENTRIES)), BPMT_QuitEntries.Transform);
-                        AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_MAINMENU)), BPMT_MainMenu.Transform);
-                        break;
-                    case SteamItemSettings.NoParentalLockButtonMainMenu:
-                    case SteamItemSettings.NoProfileIcon:
-                    case SteamItemSettings.NoSettingsMainMenu:
-                    case SteamItemSettings.AddQuitEntryMainMenu:
-                    case SteamItemSettings.AddSleepEntryMainMenu:
-                    case SteamItemSettings.AddShutdownEntryMainMenu:
-                    case SteamItemSettings.AddRestartEntryMainMenu:
-                    case SteamItemSettings.AddUpperStoreMainMenu:
-                    case SteamItemSettings.GoToLibraryOnStart:
-                    case SteamItemSettings.NoStoreButtonMainMenu:
-                    case SteamItemSettings.NoCommunityMainScreen:
-                        AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_MAINMENU)), BPMT_MainMenu.Transform);
-                        break;
-                    case SteamItemSettings.NoBrowserNavigation: //This is separate because many will be added
-                        AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_MAINMENU)), BPMT_MainMenu.Transform);
-                        break;
-                }
-            }
-
+            AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_QUITENTRIES)), BPMT_QuitEntries.Transform);
+            //AddFileToWatch(Path.GetFullPath(Path.Combine(_steamPath, Properties.Resources.SETTING_FILE_MAINMENU)), BPMT_MainMenu.Transform);
 
             _fsw = new FileSystemWatcher();
             _fsw.Path = _steamPath;
@@ -333,9 +446,20 @@ namespace Steam_BPM_Customizer
             Log(Properties.Resources.REPORT_WATCHER_STARTED);
             //DEPRECATED _bootstrapMonitor.Start();
             _steamBpmHook.Start();
+            _autoUpdater.Start();
             _fsw.EnableRaisingEvents = true;
 
 
+        }
+
+        private void Stop()
+        {
+            _fsw.EnableRaisingEvents = false;
+            WriteAllFiles(false);
+            _fsw.Dispose();
+            _autoUpdater.Stop();
+            _steamBpmHook.Stop();
+            
         }
 
         private void WriteAllFiles(bool transformedState = true)
@@ -485,90 +609,11 @@ namespace Steam_BPM_Customizer
             }
             
         }
-        private void Loop()
-        {
 
-        }
 
         private static void Log(string message)
         {
-            Console.WriteLine(message);
-        }
-
-        private static void ShowHelp()
-        {
-            Log(Properties.Resources.HELP_HEADER);
-            foreach (SteamItemSettings setting in Enum.GetValues(typeof(SteamItemSettings)))
-            {
-                Log(string.Format(Properties.Resources.HELP_PARAMETER,setting.ToString("G") ,GetSettingDescriptionText(setting)));
-            }
-            Log(Properties.Resources.HELP_CMDLINE_OPTIONS_DESCRIPTION);
-            Log(Properties.Resources.HELP_CMDLINE_OPTIONS_FOOTER);
-        }
-
-        private static string GetSettingDescriptionText(SteamItemSettings setting)
-        {
-            switch (setting)
-            {
-                case SteamItemSettings.NoBetaButtonMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoBetaButtonMainMenu;
-                case SteamItemSettings.NoBrowserNavigation:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoBrowserNavigation;
-                case SteamItemSettings.NoChangeUser:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoChangeUser;
-                case SteamItemSettings.NoExitBPM:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoExitBPM;
-                case SteamItemSettings.NoExitSteam:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoExitSteam;
-                case SteamItemSettings.NoHdmiInput:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoHdmiInput;
-                case SteamItemSettings.NoOffline:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoOffline;
-                case SteamItemSettings.NoOnline:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoOnline;
-                case SteamItemSettings.NoParentalLockButtonMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoParentalLockButtonMainMenu;
-                case SteamItemSettings.NoProfileIcon:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoProfileIcon;
-                case SteamItemSettings.NoRestart:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoRestart;
-                case SteamItemSettings.NoSettingsMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoSettingsMainMenu;
-                case SteamItemSettings.NoSettingsQuitMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoSettingsQuitMenu;
-                case SteamItemSettings.NoShutdown:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoShutdown;
-                case SteamItemSettings.NoSleep:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoSleep;
-                case SteamItemSettings.NoTurnOffCont:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoTurnOffCont;
-                case SteamItemSettings.NoUpperExitMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoUpperExitMainMenu;
-                case SteamItemSettings.NoZT:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoZT;
-                case SteamItemSettings.AddQuitEntryMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_AddQuitEntryMainMenu;
-                case SteamItemSettings.AddRestartEntryMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_AddRestartEntryMainMenu;
-                case SteamItemSettings.AddShutdownEntryMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_AddShutdownEntryMainMenu;
-                case SteamItemSettings.AddSleepEntryMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_AddSleepEntryMainMenu;
-                case SteamItemSettings.AddUpperStoreMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_AddUpperStoreMainMenu;
-                case SteamItemSettings.NoStoreButtonMainMenu:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoStoreButtonMainMenu;
-                case SteamItemSettings.HideConsole:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_HideConsole;
-                case SteamItemSettings.FMode:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_FMode;
-                case SteamItemSettings.GoToLibraryOnStart:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_GoToLibraryOnStart;
-                case SteamItemSettings.NoCommunityMainScreen:
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NoCommunityMainScreen;
-                default :
-                    return Properties.Resources.HELP_PARAMETER_DESCRIPTION_NODESCRIPTION;
-            }
+            BPM_Log.Log(message);
         }
     }
 }

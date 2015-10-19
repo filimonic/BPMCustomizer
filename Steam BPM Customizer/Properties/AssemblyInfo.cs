@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("FilimoniC Steam BPM Runtime Customizer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexey D. Filimonov 'Filimonic'")]
-[assembly: AssemblyProduct("FilimoniC GTHPC Toolkit")]
+[assembly: AssemblyProduct("FilimoniC Steam BPM Customizer")]
 [assembly: AssemblyCopyright("Alexey D. Filimonov 'Filimonic' 2015")]
 [assembly: AssemblyTrademark("FilimoniC")]
 [assembly: AssemblyCulture("")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.0.0.4")]
-[assembly: AssemblyFileVersion("0.0.4.0")]
+[assembly: AssemblyVersion("0.0.5.2")]
+[assembly: AssemblyFileVersion("0.0.5.2")]
