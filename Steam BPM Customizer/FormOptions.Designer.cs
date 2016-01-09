@@ -49,11 +49,12 @@
             this.cb_HomeScreenHideProfileIcon = new System.Windows.Forms.CheckBox();
             this.btn_UpdateNow = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btn_RestartApp = new System.Windows.Forms.Button();
-            this.lbl_UpdateCheckResult = new System.Windows.Forms.Label();
-            this.lbl_lastUpdateCheckTime = new System.Windows.Forms.Label();
-            this.timer_renewUpdateCheck = new System.Windows.Forms.Timer(this.components);
             this.btn_ExitApp = new System.Windows.Forms.Button();
+            this.btn_RestartApp = new System.Windows.Forms.Button();
+            this.lbl_lastUpdateCheckTime = new System.Windows.Forms.Label();
+            this.lbl_UpdateCheckResult = new System.Windows.Forms.Label();
+            this.timer_renewUpdateCheck = new System.Windows.Forms.Timer(this.components);
+            this.cb_DisableMinimizeBigPicture = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -118,6 +119,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.cb_DisableMinimizeBigPicture);
             this.groupBox1.Controls.Add(this.cb_DisableQuitToDesktop);
             this.groupBox1.Controls.Add(this.cb_DisableQuitMenuExitSteam);
             this.groupBox1.Controls.Add(this.cb_DisableQuitMenuSleep);
@@ -126,7 +128,7 @@
             this.groupBox1.Controls.Add(this.cb_DisableQuitMenuRestart);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(273, 185);
+            this.groupBox1.Size = new System.Drawing.Size(273, 266);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Quit menu";
@@ -135,7 +137,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.DarkRed;
-            this.label1.Location = new System.Drawing.Point(6, 161);
+            this.label1.Location = new System.Drawing.Point(6, 250);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(248, 13);
             this.label1.TabIndex = 2;
@@ -171,7 +173,7 @@
             this.groupBox2.Controls.Add(this.cb_InternetAutoUpdateDelayOnStart);
             this.groupBox2.Controls.Add(this.cb_InternetSendUsageStatistics);
             this.groupBox2.Controls.Add(this.cb_InternetAutoUpdate);
-            this.groupBox2.Location = new System.Drawing.Point(12, 203);
+            this.groupBox2.Location = new System.Drawing.Point(12, 284);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(273, 134);
             this.groupBox2.TabIndex = 4;
@@ -282,6 +284,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Maual update";
             // 
+            // btn_ExitApp
+            // 
+            this.btn_ExitApp.Location = new System.Drawing.Point(136, 105);
+            this.btn_ExitApp.Name = "btn_ExitApp";
+            this.btn_ExitApp.Size = new System.Drawing.Size(108, 23);
+            this.btn_ExitApp.TabIndex = 5;
+            this.btn_ExitApp.Text = "Exit Customizer";
+            this.btn_ExitApp.UseVisualStyleBackColor = true;
+            this.btn_ExitApp.Click += new System.EventHandler(this.btn_ExitApp_Click);
+            // 
             // btn_RestartApp
             // 
             this.btn_RestartApp.Location = new System.Drawing.Point(9, 105);
@@ -292,15 +304,6 @@
             this.btn_RestartApp.UseVisualStyleBackColor = true;
             this.btn_RestartApp.Click += new System.EventHandler(this.btn_RestartApp_Click);
             // 
-            // lbl_UpdateCheckResult
-            // 
-            this.lbl_UpdateCheckResult.AutoSize = true;
-            this.lbl_UpdateCheckResult.Location = new System.Drawing.Point(6, 62);
-            this.lbl_UpdateCheckResult.Name = "lbl_UpdateCheckResult";
-            this.lbl_UpdateCheckResult.Size = new System.Drawing.Size(28, 13);
-            this.lbl_UpdateCheckResult.TabIndex = 4;
-            this.lbl_UpdateCheckResult.Text = "###";
-            // 
             // lbl_lastUpdateCheckTime
             // 
             this.lbl_lastUpdateCheckTime.AutoSize = true;
@@ -310,21 +313,31 @@
             this.lbl_lastUpdateCheckTime.TabIndex = 4;
             this.lbl_lastUpdateCheckTime.Text = "###";
             // 
+            // lbl_UpdateCheckResult
+            // 
+            this.lbl_UpdateCheckResult.AutoSize = true;
+            this.lbl_UpdateCheckResult.Location = new System.Drawing.Point(6, 62);
+            this.lbl_UpdateCheckResult.Name = "lbl_UpdateCheckResult";
+            this.lbl_UpdateCheckResult.Size = new System.Drawing.Size(28, 13);
+            this.lbl_UpdateCheckResult.TabIndex = 4;
+            this.lbl_UpdateCheckResult.Text = "###";
+            // 
             // timer_renewUpdateCheck
             // 
             this.timer_renewUpdateCheck.Enabled = true;
             this.timer_renewUpdateCheck.Interval = 1000;
             this.timer_renewUpdateCheck.Tick += new System.EventHandler(this.timer_renewUpdateCheck_Tick);
             // 
-            // btn_ExitApp
+            // cb_DisableMinimizeBigPicture
             // 
-            this.btn_ExitApp.Location = new System.Drawing.Point(136, 105);
-            this.btn_ExitApp.Name = "btn_ExitApp";
-            this.btn_ExitApp.Size = new System.Drawing.Size(108, 23);
-            this.btn_ExitApp.TabIndex = 5;
-            this.btn_ExitApp.Text = "Exit Customizer";
-            this.btn_ExitApp.UseVisualStyleBackColor = true;
-            this.btn_ExitApp.Click += new System.EventHandler(this.btn_ExitApp_Click);
+            this.cb_DisableMinimizeBigPicture.AutoSize = true;
+            this.cb_DisableMinimizeBigPicture.Location = new System.Drawing.Point(6, 160);
+            this.cb_DisableMinimizeBigPicture.Name = "cb_DisableMinimizeBigPicture";
+            this.cb_DisableMinimizeBigPicture.Size = new System.Drawing.Size(184, 17);
+            this.cb_DisableMinimizeBigPicture.TabIndex = 1;
+            this.cb_DisableMinimizeBigPicture.Text = "Disable \'Minimize Big Picture\' item";
+            this.cb_DisableMinimizeBigPicture.UseVisualStyleBackColor = true;
+            this.cb_DisableMinimizeBigPicture.CheckedChanged += new System.EventHandler(this.cb_any_CheckedChanged);
             // 
             // formOptions
             // 
@@ -384,5 +397,6 @@
         private System.Windows.Forms.Label lbl_lastUpdateCheckTime;
         private System.Windows.Forms.Timer timer_renewUpdateCheck;
         private System.Windows.Forms.Button btn_ExitApp;
+        private System.Windows.Forms.CheckBox cb_DisableMinimizeBigPicture;
     }
 }

@@ -33,6 +33,7 @@ namespace Steam_BPM_Customizer
             BPM_OptionsManager.SetSetting(SteamItemSettings.Program_SendUsageStatistics, cb_InternetSendUsageStatistics.Checked);
             BPM_OptionsManager.SetSetting(SteamItemSettings.Program_EnableAutoUpdate, cb_InternetAutoUpdate.Checked);
             BPM_OptionsManager.SetSetting(SteamItemSettings.Program_DelayAutoUpdateAfterStart, cb_InternetAutoUpdateDelayOnStart.Checked);
+            BPM_OptionsManager.SetSetting(SteamItemSettings.No_QuitMenu_MinimizeBigBicture, cb_DisableMinimizeBigPicture.Checked);
 #if _DEVELOPEMENT_MODE_
             BPM_OptionsManager.SetSetting(SteamItemSettings.NoProfileIcon, cb_HomeScreenHideProfileIcon.Checked);
             BPM_OptionsManager.SetSetting(SteamItemSettings.HomeScreenHideProfileName, cb_HomeScreenHideProfileName.Checked);
@@ -82,6 +83,9 @@ namespace Steam_BPM_Customizer
                             break;
                         case SteamItemSettings.Program_DelayAutoUpdateAfterStart:
                             cb_InternetAutoUpdateDelayOnStart.Checked = true;
+                            break;
+                        case SteamItemSettings.No_QuitMenu_MinimizeBigBicture:
+                            cb_DisableMinimizeBigPicture.Checked = true;
                             break;
 #if _DEVELOPEMENT_MODE_
                         case SteamItemSettings.HomeScreenHideProfileName:

@@ -39,6 +39,8 @@ namespace Steam_BPM_Customizer
         Program_EnableAutoUpdate,
         Program_FirstRunPassed_v0050,
         Program_DelayAutoUpdateAfterStart,
+        No_QuitMenu_MinimizeBigBicture, //Added 0.0.5.5
+
 
 #if _DEVELOPEMENT_MODE_
         NoProfileIcon, //NoProfileIcon

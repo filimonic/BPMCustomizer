@@ -81,6 +81,8 @@ namespace Steam_BPM_Customizer
                     return "ShutdownMachine()";
                 case SteamItemSettings.No_QuitMenu_Sleep:
                     return "SuspendMachine()";
+                case SteamItemSettings.No_QuitMenu_MinimizeBigBicture:
+                    return "MinimizeApp()";
 #if _DEVELOPEMENT_MODE_
                 case SteamItemSettings.NoHdmiInput :
                     return "SwitchToHDMIInput()";
@@ -93,7 +95,7 @@ namespace Steam_BPM_Customizer
                 case SteamItemSettings.NoTurnOffCont:
                     return "TurnOffActiveController()";
 #endif
-                    default :
+                default :
                     return null;
             }
         }
