@@ -74,7 +74,7 @@ namespace Steam_BPM_Customizer
                 case SteamItemSettings.No_QuitMenu_ExitSteam :
                     return "ExitSteam()";
                 case SteamItemSettings.No_QuitMenu_Restart:
-                    return "RestartMachine()";
+                    return "RestartMachine(";
                 case SteamItemSettings.No_QuitMenu_Settings:
                     return "ShowSettingsFromQuitEntries()";
                 case SteamItemSettings.No_QuitMenu_Shutdown:
